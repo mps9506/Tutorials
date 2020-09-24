@@ -1,6 +1,6 @@
 --- 
-title: "A Minimal Book Example"
-author: "Yihui Xie"
+title: "Practical Intro to R and Applications in Water Resources"
+author: "Michael Schramm"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
