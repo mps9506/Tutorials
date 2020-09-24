@@ -1,5 +1,11 @@
 # Loading and Formatting Data {#data}
 
+
+```{r}
+library(tidyverse)
+```
+
+
 Text files (csv, delimited, )
 Excel
 Relational databases
