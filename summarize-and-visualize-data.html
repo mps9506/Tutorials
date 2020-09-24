@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Practical R Applications in Water Resources</title>
+  <title>Chapter 2 Summarize and Visualize Data | Practical R Applications in Water Resources</title>
   <meta name="description" content="This is a DRAFT!!!" />
   <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Practical R Applications in Water Resources" />
+  <meta property="og:title" content="Chapter 2 Summarize and Visualize Data | Practical R Applications in Water Resources" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Practical R Applications in Water Resources" />
+  <meta name="twitter:title" content="Chapter 2 Summarize and Visualize Data | Practical R Applications in Water Resources" />
   
   <meta name="twitter:description" content="This is a DRAFT!!!" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="data.html"/>
+<link rel="prev" href="data.html"/>
+<link rel="next" href="methods.html"/>
 <script src="libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -178,78 +178,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Practical R Applications in Water Resources</h1>
-<p class="author"><em>Michael Schramm</em></p>
-<p class="date"><em>2020-09-24</em></p>
-</div>
-<div id="prerequisites" class="section level1 unnumbered">
-<h1>Prerequisites</h1>
-<p>This is not intended to be a primer or introduction to programming or R. Instead, this is a cookbook of sorts to help guide users to applying R in the context of our water resources work. External resources for those interested in the basics are provided below (<a href="index.html#basics">Familiarity with R and RStudio</a>).
-A few things required before getting started…</p>
-<div id="install-r" class="section level2 unnumbered">
-<h2>Install R</h2>
-<p>Download and install the newest version of R for your platform at: <a href="https://cloud.r-project.org/">https://cloud.r-project.org/</a>. For <em>Windows</em>:</p>
-<ul>
-<li>click on “Download R for Windows”</li>
-<li>click on “base”</li>
-<li>click the download link at the top of the page</li>
-<li>open the downloaded <code>R-4.x.x.exe</code> file and follow the prompts</li>
-</ul>
-<p>For <em>macOS</em>:</p>
-<ul>
-<li>click on “Download R for (Mac) OS X”</li>
-<li>Under “Latest release:” click on <code>R-4.x.x.pkg</code></li>
-</ul>
-<p>For <em>Linux</em>:</p>
-<ul>
-<li>click “Download R for Linux” and choose the appropriate distribution</li>
-</ul>
-</div>
-<div id="install-rstudio" class="section level2 unnumbered">
-<h2>Install RStudio</h2>
-<p>Install the latest version of Rstudio Desktop for your platform at:
-<a href="https://rstudio.com/products/rstudio/download/#download">https://rstudio.com/products/rstudio/download/#download</a></p>
-</div>
-<div id="basics" class="section level2 unnumbered">
-<h2>Familiarity with R and RStudio</h2>
-<p>This text assume some basic familiarity with R and RStudio. At minimum you should know how to start a project in RStudio, have a basic understanding of R packages and functions…</p>
-<p>If you are completely new to using R I recommend a few resources below:</p>
-<p><a href="https://tinystats.github.io/teacups-giraffes-and-statistics/">https://tinystats.github.io/teacups-giraffes-and-statistics/</a> - Great if you are completely new to programming, also provides some foundational stats training.</p>
-<p><a href="https://rstudio.cloud/learn/primers">https://rstudio.cloud/learn/primers</a> - This provides self-paced, interactive, fundamental R programming exercises.</p>
-<p><a href="https://www.adventures-in-r.com/post/01-working-in-r/">Adventures in R</a> - Another self-paced set of videos and excercies. This has a good introduction to the RStudio IDE.</p>
-</div>
-<div id="suggested-packages" class="section level2 unnumbered">
-<h2>Suggested Packages</h2>
-<p>This text will use the <code>tidyverse</code> set of packages throughout.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true"></a><span class="kw">install.pacakges</span>(<span class="st">&quot;tidyverse&quot;</span>)</span></code></pre></div>
-<p>Sections on spatial analysis will utilize <code>sf</code> and <code>raster</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" aria-hidden="true"></a><span class="kw">install.pacakges</span>(<span class="kw">c</span>(<span class="st">&quot;sf&quot;</span>, <span class="st">&quot;raster&quot;</span>))</span></code></pre></div>
-</div>
-<div id="contributions-and-editing" class="section level2 unnumbered">
-<h2>Contributions and Editing</h2>
-<p>This text is rendered using <code>bookdown</code> and GitHub Actions <span class="citation">(Xie <a href="#ref-bookdown2016" role="doc-biblioref">2016</a>)</span>. This means you can submit issues, add code, or copy and render the book on your own system. The project is located on <a href="https://github.com/mps9506/Tutorials">GitHub</a>. If you clone the project into your RStudio session, the book can be rendered as local website using:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1" aria-hidden="true"></a>bookdown<span class="op">::</span><span class="kw">render_book</span>(<span class="st">&quot;index.Rmd&quot;</span>)</span></code></pre></div>
-<p>Navigate to the <code>\_book</code> subdirectory and open <code>index.html</code> to see the book.</p>
-<p>Furthermore, a pdf copy of the book can be generated using:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="index.html#cb4-1" aria-hidden="true"></a>bookdown<span class="op">::</span><span class="kw">render_book</span>(<span class="st">&quot;index.Rmd&quot;</span>, <span class="st">&quot;bookdown::pdf_book&quot;</span>)</span></code></pre></div>
-<p>Navigate to the <code>\_book</code> subdirectory and open <code>book.pdf</code>.</p>
+<div id="summarize-and-visualize-data" class="section level1" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Summarize and Visualize Data</h1>
+<p>Here is a review of existing methods.</p>
 
-</div>
-</div>
-<h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-bookdown2016">
-<p>Xie, Yihui. 2016. <em>Bookdown: Authoring Books and Technical Documents with R Markdown</em>. Boca Raton, Florida: Chapman; Hall/CRC. <a href="https://github.com/rstudio/bookdown">https://github.com/rstudio/bookdown</a>.</p>
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="data.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="methods.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
