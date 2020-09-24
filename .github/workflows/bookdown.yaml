@@ -38,7 +38,7 @@ jobs:
 
       - name: Install packages
         run: |
-          R -e 'install.packages(c("renv", "bookdown", "tufte"))'
+          R -e 'install.packages(c("renv", "bookdown", "tufte", "tidyverse"))'
           R -e 'renv::restore()'
 
       - name: Render Book
