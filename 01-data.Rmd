@@ -1,7 +1,8 @@
 # Loading and Formatting Data {#data}
 
+Load required packages:
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 ```
 
@@ -16,48 +17,71 @@ Reading data into R is generally the first step in any project workflow. The eas
 
 ## Rectangular data
 
-Rectangular data generally refers to data stored as a table, rows and columns, or matrix. This is probably the most typical format of data we are reading into R.
+Rectangular data generally refers to data stored as a table, rows and columns, or matrix. This is probably the most typical format of data we are reading into R. This data most often comes by way of text files or Excel spreadsheets. The `readr` package includes several functions for handling text files: 
 
+- `read_csv`: reads comma separated files, 
+- `read_tsv`: reads tab seperated files,
+- `read_delim`: reads any formatted text file with a specified field separator.
 
+The example below is reading in a TCEQ SWQMIS generated datafile. The fields in the file are pipe seperated (`|`). Notice you are not limited to local filenames, you can point to files with a valid URL address. By default, `readr` tries to guess the variable type for each column. It is tedious, but I suggest specifying the column type with the `col_type` argument to prevent any errors. You can also skip importing certain columns if you choose. This can help speed things up if you are reading in a really large dataset.
 
+```{r readr}
+df <- read_delim(file = "https://gist.githubusercontent.com/mps9506/004624b5aa9bdf101c36278835cb38df/raw/46267d403bb450da4f7a0c726bd77d4fff1c5be5/1501_Bacteria.txt",
+                 delim = "|",
+                 col_types = cols(
+                   `RFA(Sample Set ID)/Tag_id` = col_character(),
+                   Segment = col_character(),
+                   `Station ID` = col_character(),
+                   `Station Description` = col_character(),
+                   `Parameter Code` = col_character(),
+                   `Parameter Description` = col_character(),
+                   `Greater Than/Less Than` = col_skip(),
+                   Value = col_double(),
+                   `End Date` = col_date(format = "%m/%d/%Y"),
+                   `End Time` = col_skip(),
+                   `End Depth` = col_skip(),
+                   `Start Date` = col_skip(),
+                   `Start Time` = col_skip(),
+                   `Start Depth` = col_skip(),
+                   `Composite Category` = col_skip(),
+                   `Composite Type` = col_skip(),
+                   `Submitting Entity` = col_character(),
+                   `Collecting Entity` = col_character(),
+                   `Monitoring Type` = col_character(),
+                   Comments = col_character())
+                 )
+
+df
+```
+
+The read_delim and related functions will produce an object called a tibble. When you print a tibble to the console, it provides the column names, variable types, and an abbreviated snapshot of the first few rows of data. 
 
 ## Formatting Data
 
-Most analysis and plotting functions in R prefer something called *tidy data*. The concept of tidy data can be difficult to grasp since we often don't record data in a tidy format. Table \@ref(tab:wide-data) is an example of how data is often recorded in a spreadsheet. Notice that the is a row for the data of every observation, but there is also a column for each water quality parameter. In the example, there are four observations per row.
+Most analysis and plotting functions in R prefer something called *tidy data*. The concept of tidy data can be difficult to grasp since we often don't record data in a tidy format. Table \@ref(tab:wide-data) is an example of how data is often recorded in a spreadsheet. Notice there is a row for each date, then columns that have values for each water quality parameter and flow.
 
 ```{r widedata, echo=FALSE}
 wide_data <- tibble(Date = seq(as.Date("2020-01-01"), as.Date("2020-03-01"), length.out = 5),
-       Nitrogen = round(rnorm(5, 0.25, 0.1), 2),
-       Phosphorus = round(rnorm(5, 0.02, 0.01), 2),
-       Ecoli = round(rlnorm(5, log(150), log(5))),
-       Flow = round(rlnorm(5, log(250), log(10))))
+                    Flow = round(rlnorm(5, log(c(100, 100, 250, 1000, 100)), log(1.5))),
+                    Nitrogen = round(rnorm(5, 0.25, 0.1), 2),
+                    Phosphorus = round(rnorm(5, 0.02, 0.01), 2),
+                    Ecoli = round(rlnorm(5, log(150), log(5))))
 
 knitr::kable(wide_data,
              caption = "Example of wide data format")
 ```
 
-Tidy data is alos often called long data. The goal is to get one observation per row and each column should be a covariate. In this case, we probably want a column of water quality paramater observations (Nitrogen, Phosphorus, *E. coli*), a column with flow values (a covariate), and a column with the observation date for the water quality parameter.
+Tidy data is also called long data. The goal is to get one observation per row and a column for every covariate. In this case, we can tidy the data into four columns: Date, Flow Value, Parameter Name, and Parameter Value (Table \@ref(tab:narrow-data). The observation of interest is the Parameter_Value which has a unique observation for each row. Date, Flow, and Parameter_name are not unique observations any longer.
 
-
-You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(data). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods).
-
-Figures and tables with captions will be placed in `figure` and `table` environments, respectively.
-
-```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center'}
-par(mar = c(4, 4, .1, .1))
-plot(pressure, type = 'b', pch = 19)
+```{r narrow-data, echo=FALSE}
+tidyr::pivot_longer(wide_data, cols = Nitrogen:Ecoli, names_to = "Parameter_Name", values_to = "Parameter_Value")
 ```
 
-Reference a figure by its code chunk label with the `fig:` prefix, e.g., see Figure \@ref(fig:nice-fig). Similarly, you can reference tables generated from `knitr::kable()`, e.g., see Table \@ref(tab:nice-tab).
 
-```{r nice-tab, tidy=FALSE}
-knitr::kable(
-  head(iris, 20), caption = 'Here is a nice table!',
-  booktabs = TRUE
-)
-```
 
-You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
+**Work through real world example**
+
+
 
 
 ## USGS and EPA Data {#fed-data}
