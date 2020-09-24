@@ -1,0 +1,70 @@
+# Loading and Formatting Data {#data}
+
+Text files (csv, delimited, )
+Excel
+Relational databases
+Stat software (SAS SPSS Stata)
+Spatial (shapefiles, raster, etc)
+
+Reading data into R is generally the first step in any project workflow. The easiest format to get data into R is from a `.csv` or similar text file. However, there are functions to read data from Excel, relational databases, and some proprietary statistical software packages. There are also functions for readining in spatial data such as shapefiles or raster files, this is covered in ...
+
+## Rectangular data
+
+Rectangular data generally refers to data stored as a table, rows and columns, or matrix. This is probably the most typical format of data we are reading into R.
+
+
+
+
+## Formatting Data
+
+Most analysis and plotting functions in R prefer something called *tidy data*. The concept of tidy data can be difficult to grasp since we often don't record data in a tidy format. Table \@ref(tab:wide-data) is an example of how data is often recorded in a spreadsheet. Notice that the is a row for the data of every observation, but there is also a column for each water quality parameter. In the example, there are four observations per row.
+
+```{r widedata, echo=FALSE}
+wide_data <- tibble(Date = seq(as.Date("2020-01-01"), as.Date("2020-03-01"), length.out = 5),
+       Nitrogen = round(rnorm(5, 0.25, 0.1), 2),
+       Phosphorus = round(rnorm(5, 0.02, 0.01), 2),
+       Ecoli = round(rlnorm(5, log(150), log(5))),
+       Flow = round(rlnorm(5, log(250), log(10))))
+
+knitr::kable(wide_data,
+             caption = "Example of wide data format")
+```
+
+Tidy data is alos often called long data. The goal is to get one observation per row and each column should be a covariate. In this case, we probably want a column of water quality paramater observations (Nitrogen, Phosphorus, *E. coli*), a column with flow values (a covariate), and a column with the observation date for the water quality parameter.
+
+
+You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(data). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods).
+
+Figures and tables with captions will be placed in `figure` and `table` environments, respectively.
+
+```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center'}
+par(mar = c(4, 4, .1, .1))
+plot(pressure, type = 'b', pch = 19)
+```
+
+Reference a figure by its code chunk label with the `fig:` prefix, e.g., see Figure \@ref(fig:nice-fig). Similarly, you can reference tables generated from `knitr::kable()`, e.g., see Table \@ref(tab:nice-tab).
+
+```{r nice-tab, tidy=FALSE}
+knitr::kable(
+  head(iris, 20), caption = 'Here is a nice table!',
+  booktabs = TRUE
+)
+```
+
+You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
+
+
+## USGS and EPA Data {#fed-data}
+
+USGS provides R functions to retrieve and load streamflow and water quality data directly to R through the `dataRetrieval` package [@R-dataRetrieval].
+
+
+## Online Data Sources
+
+Use APIs (TWDB example)
+
+
+
+## Project Workflows
+
+Discuss project structure, storing raw data seperately, using scripts to download and save data locally one time, 
